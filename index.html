@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Examensinbjudan </title>
+
+<style>
+body {
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 100px;
+}
+
+#envelope {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+#envelope:hover {
+  transform: scale(1.05);
+}
+
+#letter {
+  display: none;
+  background: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 300px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+input[type="password"] {
+  padding: 10px;
+  width: 150px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2> Du har fått ett säkrat kuvert</h2>
+<p>Skriv lösenordet för att öppna kuvertet</p>
+<p><b>Tips:</b> Min favoritdryck</p>
+
+<!-- Kuvertbild -->
+<img id="envelope" src="https://i.imgur.com/Yk0I4vK.png" alt="Kuvert">
+
+<br>
+<input type="password" id="pwd" placeholder="Skriv lösenord här">
+<br>
+<button onclick="checkPassword()">Öppna kuvert</button>
+
+<!-- Inbjudan -->
+<div id="letter">
+  <h2>🎓 Examensfest 🎓</h2>
+  <p>Du är inbjuden till min examensfest!</p>
+  <p><b>Datum:</b> 6 juni</p>
+  <p><b>Tid:</b> [tid] </p>
+  <p><b>Plats:</b> [Din adress]</p>
+  <p>OSA senast: [datum]</p>
+  <p>Vi ses där! 🎉</p>
+</div>
+
+<script>
+function checkPassword() {
+  var password = document.getElementById("pwd").value;
+
+  // Rätt lösenord
+  if(password.toLowerCase() == "kaffe") {
+    document.getElementById("envelope").style.display = "none"; // kuvert försvinner
+    document.getElementById("letter").style.display = "block";  // brevet visas
+  } else {
+    alert("Fel lösenord, försök igen!");
+  }
+}
+</script>
+
+</body>
+</html>

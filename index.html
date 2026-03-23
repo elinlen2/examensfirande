@@ -31,7 +31,6 @@
             background-color: #f8bbd0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             border-radius: 0 0 10px 10px;
-            overflow: visible; 
         }
 
         .flap {
@@ -60,13 +59,14 @@
 
         .letter {
             position: absolute;
-            top: 10px;
+            /* ÄNDRING HÄR: Startar 5px från toppen inuti kuvertet */
+            top: 5px; 
             left: 10px;
             width: 280px;
             height: 180px;
             background: white;
             transform: translateY(0); 
-            transition: transform 3s ease-in-out 0.7s;
+            transition: transform 2.5s ease-in-out 0.7s;
             box-sizing: border-box;
             padding: 20px;
             text-align: center;
@@ -97,13 +97,15 @@
         }
 
         .envelope-wrapper.open .letter-container {
+            /* Gör att pappret kan synas ovanför kuvertet när det åker upp */
             overflow: visible;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-200px); /* Justera denna om pappret åker för högt på mobil */
+            /* Åker upp 220px från sin startposition */
+            transform: translateY(-220px); 
             z-index: 5;
-            height: 350px; /* Gör pappret längre när det åker upp */
+            height: 350px; 
         }
 
         #password-container {
@@ -111,11 +113,10 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            width: 260px; /* Fixerad bredd för mobilen */
+            width: 260px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* VIKTIGT: Font-size 16px förhindrar zoom på iPhone */
         input {
             padding: 12px;
             border-radius: 20px;

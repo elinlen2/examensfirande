@@ -6,7 +6,7 @@
     <title>Min Examensinbjudan</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: #fef1f5;
             display: flex;
             flex-direction: column;
@@ -21,7 +21,6 @@
             perspective: 1000px;
             margin-bottom: 30px;
             position: relative;
-            margin-top: 50px;
         }
 
         .envelope-wrapper {
@@ -31,6 +30,8 @@
             background-color: #f8bbd0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             border-radius: 0 0 10px 10px;
+            /* DENNA RAD GÖR ATT PAPPRET GÖMS INUTI */
+            overflow: visible; 
         }
 
         .flap {
@@ -47,6 +48,37 @@
             z-index: 4;
         }
 
+        /* En extra container som klipper bort pappret när det är "nere" */
+        .letter-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Här döljs allt som är utanför rosa rutan */
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 280px;
+            height: 180px;
+            background: white;
+            /* Startposition: helt nere och djupt i kuvertet */
+            transform: translateY(0); 
+            transition: transform 3s ease-in-out 0.7s;
+            box-sizing: border-box;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 2px;
+        }
+
+        .letter h1 { font-size: 18px; color: #ec407a; margin-top: 0; }
+        .letter p { font-size: 13px; color: #555; margin: 5px 0; }
+
         .front {
             position: absolute;
             bottom: 0;
@@ -58,66 +90,46 @@
             border-bottom: 110px solid #f8bbd0; 
             border-top: 90px solid transparent;
             z-index: 3;
-            border-radius: 0 0 10px 10px;
+            pointer-events: none;
         }
 
-        /* --- HÄR ÄR ÄNDRINGEN FÖR PAPPPRET --- */
-        .letter {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 280px;
-            height: 180px;
-            background: white;
-            z-index: 2;
-            /* Ändrad till 2.5 sekunder för ett mjukt glid */
-            transition: transform 2.5s ease-in-out 0.6s, height 2.5s ease-in-out 0.6s;
-            box-sizing: border-box;
-            padding: 25px 20px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 2px;
-            overflow: hidden; /* Döljer texten tills den åker upp */
-        }
-
-        .letter h1 { font-size: 20px; margin-top: 0; color: #ec407a; }
-        .letter p { font-size: 14px; color: #555; line-height: 1.5; margin: 8px 0; }
-
+        /* NÄR MAN ÖPPNAR */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
+        /* Nu tillåter vi pappret att synas utanför containern när det åker UPP */
+        .envelope-wrapper.open .letter-container {
+            overflow: visible;
+        }
+
         .envelope-wrapper.open .letter {
-            transform: translateY(-200px); /* Åker upp lite högre */
-            height: 350px; /* Växer långsamt till full längd */
+            transform: translateY(-180px); /* Glider upp långsamt */
             z-index: 5;
         }
 
         #password-container {
             background-color: #f8bbd0;
-            padding: 20px 30px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
-            transition: opacity 0.5s ease-out;
         }
 
-        input[type="password"] {
-            padding: 12px;
-            width: 200px;
-            border: 2px solid #f48fb1;
-            border-radius: 25px;
+        input {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #f48fb1;
             margin-bottom: 10px;
-            outline: none;
             text-align: center;
         }
 
         button {
-            padding: 10px 25px;
-            background-color: #ec407a;
+            padding: 10px 20px;
+            background: #ec407a;
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -128,20 +140,23 @@
     <div id="envelope-container">
         <div class="envelope-wrapper" id="envelope">
             <div class="flap"></div>
-            <div class="letter">
-                <h1>Min Examen!</h1>
-                <p>Varmt välkomna att fira min stora dag med mig!</p>
-                <p><strong>Datum:</strong> 15 Juni 2026</p>
-                <p><strong>Tid:</strong> Kl 14:00</p>
-                <p><strong>Plats:</strong> Min trädgård</p>
-                <p><i>Kramar!</i></p>
+            
+            <div class="letter-container">
+                <div class="letter">
+                    <h1>Min Examen!</h1>
+                    <p>Välkommen på firande!</p>
+                    <p><strong>Datum:</strong> 15 Juni</p>
+                    <p><strong>Tid:</strong> 14:00</p>
+                    <p>Hoppas vi ses!</p>
+                </div>
             </div>
+            
             <div class="front"></div>
         </div>
     </div>
 
-    <div id="password-container">
-        <h3 style="color: white; margin-top: 0;">Lås upp inbjudan</h3>
+    <div id="password-container" id="login">
+        <h3 style="color: white; margin: 0 0 10px 0;">Skriv lösenord</h3>
         <input type="password" id="passwordInput" placeholder="Lösenord">
         <br>
         <button onclick="checkPassword()">Öppna</button>
@@ -152,9 +167,7 @@
             var pass = document.getElementById("passwordInput").value;
             if (pass.toLowerCase() === "rosa") {
                 document.getElementById("envelope").classList.add("open");
-                var pwdContainer = document.getElementById("password-container");
-                pwdContainer.style.opacity = "0";
-                setTimeout(function(){ pwdContainer.style.display = "none"; }, 500);
+                document.getElementById("password-container").style.display = "none";
             } else {
                 alert("Fel lösenord!");
             }

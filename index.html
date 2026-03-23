@@ -21,10 +21,9 @@
             position: relative;
             width: 300px;
             height: 200px;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
 
-        /* Kuvertets baksida */
         .envelope-wrapper {
             position: relative;
             width: 100%;
@@ -34,7 +33,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        /* Locket */
+        /* LOCKET */
         .flap {
             position: absolute;
             top: 0;
@@ -46,10 +45,10 @@
             border-top: 120px solid #f48fb1; 
             transform-origin: top;
             transition: transform 0.6s ease-in-out;
-            z-index: 3; /* Ligger över pappret i början */
+            z-index: 4; /* Ligger över pappret när det är stängt */
         }
 
-        /* --- DETTA DÖLJER PAPPPRET --- */
+        /* FRAMSIDAN (Den som döljer pappret i botten) */
         .front {
             position: absolute;
             bottom: 0;
@@ -60,43 +59,42 @@
             border-right: 150px solid #fce4ec; 
             border-bottom: 110px solid #f8bbd0; 
             border-top: 90px solid transparent;
-            z-index: 4; /* Ligger ALLTID framför pappret */
+            z-index: 3; /* Ligger framför pappret så det inte syns igenom */
             pointer-events: none;
         }
 
-        /* Det vita pappret */
+        /* PAPPPRET */
         .letter {
             position: absolute;
-            top: 10px; /* Börjar inuti kuvertet */
+            top: 5px; /* Ligger inuti kuvertet */
             left: 10px;
             width: 280px;
             height: 180px;
             background: white;
-            z-index: 2; /* Ligger bakom framsidan (.front) */
+            z-index: 2; /* Ligger BAKOM fronten och locket */
+            transition: transform 2.5s ease-in-out 0.8s, height 2.5s ease-in-out 0.8s;
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
-            /* Långsam animation uppåt */
-            transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .letter h1 { font-size: 18px; color: #ec407a; margin-top: 0; }
-        .letter p { font-size: 14px; color: #555; }
+        .letter p { font-size: 14px; color: #555; line-height: 1.4; }
 
-        /* Animation när klassen .open läggs till */
+        /* ÖPPNA-ANIMATION */
         .open .flap {
             transform: rotateX(180deg);
-            z-index: 1; /* Hamnar bakom när det öppnas */
+            z-index: 1; /* Hamnar bakom när det fälls upp */
         }
 
         .open .letter {
-            transform: translateY(-200px); /* Åker långsamt upp */
-            height: 380px; /* Blir längre så all text får plats */
-            z-index: 5; /* Hamnar nu längst fram så man kan läsa */
+            transform: translateY(-200px); /* Åker UPPÅT */
+            height: 380px; 
+            z-index: 5; /* Hamnar längst fram när det är ute */
         }
 
-        /* Lösenordsruta */
+        /* LÖSENORDSRUTAN */
         #password-container {
             background-color: #f8bbd0;
             padding: 20px;
@@ -111,9 +109,10 @@
             border-radius: 20px;
             border: 1px solid #f48fb1;
             margin-bottom: 10px;
-            font-size: 16px; /* Viktigt: förhindrar zoom på mobil */
             text-align: center;
             outline: none;
+            /* VIKTIGT: 16px font stoppar zoomen */
+            font-size: 16px; 
         }
 
         button {
@@ -135,9 +134,9 @@
             
             <div class="letter">
                 <h1>Min Examen!</h1>
-                <p>Varmt välkomna på firande!</p>
+                <p>Varmt välkomna att fira min stora dag med mig!</p>
                 <p><strong>Datum:</strong> 15 Juni 2026</p>
-                <p><strong>Tid:</strong> Kl 14:00</p>
+                <p><strong>Tid:</strong> Kl 14:00 - sent</p>
                 <p><strong>Plats:</strong> Min trädgård</p>
                 <p>Hoppas vi ses!</p>
             </div>

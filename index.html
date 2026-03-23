@@ -1,108 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
-<meta charset="UTF-8">
-<title>Graduation Invitation</title>
-<style>
-body {
-  background-color: #fff0f6; /* Ljus rosa bakgrund */
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding-top: 100px;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examensinbjudan</title>
+    <style>
+        /* Grundinställningar för hela sidan */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
 
-#envelope-container {
-  position: relative;
-  width: 300px;
-  height: 200px;
-  margin: auto;
-  perspective: 1000px;
-}
+        /* Design för lösenordsrutan */
+        #login-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        input[type="password"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #45a049; }
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 10px;
+        }
 
-#envelope {
-  width: 100%;
-  height: 100%;
-  background-image: url('a_digital_screenshot_of_a_text_message_conversatio.png'); /* Rosa kuvertbild */
-  background-size: cover;
-  border-radius: 15px;
-  transition: transform 1s;
-  transform-origin: top;
-}
+        /* Design för själva kuvertet */
+        #invitation-container {
+            display: none; /* Dold tills lösenordet är rätt */
+            perspective: 1000px;
+            margin-top: 150px; /* Knuffar ner kuvertet lite för att ge plats åt pappret */
+        }
 
-#letter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff0f6;
-  border-radius: 15px;
-  padding: 20px;
-  display: none;
-  box-sizing: border-box;
-  border: 2px solid #ff69b4;
-}
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #e0e0e0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
 
-input[type="password"] {
-  padding: 10px;
-  width: 150px;
-  margin-top: 20px;
-}
+        /* Locket på kuvertet */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 120px solid #cfcfcf;
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+            z-index: 4;
+        }
 
-button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  background-color: #ff69b4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-}
-</style>
+        /* Framsidan på kuvertet */
+        .front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid #dcdcdc;
+            border-right: 150px solid #dcdcdc;
+            border-bottom: 100px solid #d3d3d3;
+            border-top: 100px solid transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Pappret/Inbjudan inuti kuvertet */
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 280px;
+            height: 180px;
+            background: white;
+            z-index: 2;
+            transition: transform 0.8s ease-in-out 0.6s, height 0.8s ease-in-out 0.6s;
+            box-sizing: border-box;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        /* Texten på pappret */
+        .letter h1 {
+            font-size: 22px;
+            margin-top: 0;
+            color: #333;
+        }
+        .letter p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin: 8px 0;
+        }
+
+        /* Animationerna som sker när man öppnar */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1; /* Locket fälls bakom pappret */
+        }
+        .envelope-wrapper.open .letter {
+            transform: translateY(-160px); /* Skickar upp pappret */
+            height: 320px; /* Gör pappret längre så all text får plats */
+            z-index: 5;
+        }
+    </style>
 </head>
 <body>
 
-<h2>🔒 Du har fått ett säkrat rosa kuvert</h2>
-<p>Skriv lösenordet för att öppna kuvertet</p>
-<p><b>Tips:</b> Något jag alltid dricker</p>
+    <div id="login-container">
+        <h2>Lås upp inbjudan</h2>
+        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
+        <br>
+        <button onclick="checkPassword()">Öppna kuvertet</button>
+        <p id="errorMsg" class="error-msg">Fel lösenord, försök igen!</p>
+    </div>
 
-<div id="envelope-container">
-  <div id="envelope"></div>
-  <div id="letter">
-    <h2>🎓 Examensfest 🎓</h2>
-    <p>Du är inbjuden till min examensfest!</p>
-    <p><b>Datum:</b> 15 juni</p>
-    <p><b>Tid:</b> 18:00</p>
-    <p><b>Plats:</b> [Din adress]</p>
-    <p>OSA senast: [datum]</p>
-    <p>Vi ses där! 🎉</p>
-  </div>
-</div>
+    <div id="invitation-container">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="flap"></div>
+            
+            <div class="letter">
+                <h1>Min Examen!</h1>
+                <p>Äntligen är det dags, och jag vill fira det med er!</p>
+                <p><strong>Datum:</strong> 15 Juni</p>
+                <p><strong>Tid:</strong> Kl 14:00 - sent</p>
+                <p><strong>Plats:</strong> Hemma hos mig</p>
+                <p>O.S.A senast den 1 Juni via sms.</p>
+                <p><i>Varmt välkomna!</i></p>
+            </div>
+            
+            <div class="front"></div>
+        </div>
+    </div>
 
-<input type="password" id="pwd" placeholder="Skriv lösenord här">
-<br>
-<button onclick="checkPassword()">Öppna kuvert</button>
-
-<script>
-function checkPassword() {
-  var password = document.getElementById("pwd").value;
-
-  if(password.toLowerCase() == "kaffe") {
-    var env = document.getElementById("envelope");
-    var letter = document.getElementById("letter");
-
-    // Kuvert “öppnas”
-    env.style.transform = "rotateX(180deg)";
-    setTimeout(function(){
-      env.style.display = "none";
-      letter.style.display = "block";
-    }, 1000);
-  } else {
-    alert("Fel lösenord, försök igen!");
-  }
-}
-</script>
+    <script>
+        function checkPassword() {
+            var pass = document.getElementById("passwordInput").value;
+            
+            // HÄR ÄNDRAR DU LÖSENORDET (just nu är det "examen2026")
+            if (pass === "examen2026") {
+                // Dölj inloggningen och visa kuvertet
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("invitation-container").style.display = "block";
+                
+                // Starta animationen efter en liten, liten paus
+                setTimeout(function() {
+                    document.getElementById("envelope").classList.add("open");
+                }, 100);
+            } else {
+                // Visa felmeddelande
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        }
+    </script>
 
 </body>
 </html>

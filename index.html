@@ -3,68 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examensinbjudan</title>
+    <title>Min Examensinbjudan</title>
     <style>
-        /* Grundinställningar för hela sidan */
+        /* Grundinställningar - mjuk bakgrund för hela sidan */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #fef1f5; /* En väldigt ljus, mjuk rosa */
             display: flex;
+            flex-direction: column; /* Staplar kuvert och inloggning på höjden */
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Förhindrar scrollning under animationen */
         }
 
-        /* Design för lösenordsrutan */
-        #login-container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        input[type="password"] {
-            padding: 10px;
-            margin: 10px 0;
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover { background-color: #45a049; }
-        .error-msg {
-            color: red;
-            font-size: 14px;
-            display: none;
-            margin-top: 10px;
-        }
-
-        /* Design för själva kuvertet */
-        #invitation-container {
-            display: none; /* Dold tills lösenordet är rätt */
+        /* --- DESIGN FÖR KUVERTET (alltid synligt) --- */
+        #envelope-container {
             perspective: 1000px;
-            margin-top: 150px; /* Knuffar ner kuvertet lite för att ge plats åt pappret */
+            margin-bottom: 30px; /* Mellanrum till inloggningsrutan */
+            position: relative;
+            margin-top: 100px; /* Ger plats åt pappret som ska åka upp */
         }
 
         .envelope-wrapper {
             position: relative;
             width: 300px;
             height: 200px;
-            background-color: #e0e0e0;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            /* Pastellrosa basfärg för insidan av kuvertet */
+            background-color: #fce4ec; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-radius: 4px;
         }
 
-        /* Locket på kuvertet */
+        /* Kuvertets lock (flap) */
         .flap {
             position: absolute;
             top: 0;
@@ -73,28 +45,32 @@
             height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-top: 120px solid #cfcfcf;
+            /* Locket är lite mörkare pastellrosa */
+            border-top: 120px solid #f8bbd0; 
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
-            z-index: 4;
+            transition: transform 0.8s ease-in-out;
+            z-index: 4; /* Ligger överst från början */
+            border-radius: 4px 4px 0 0;
         }
 
-        /* Framsidan på kuvertet */
+        /* Kuvertets framsida */
         .front {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid #dcdcdc;
-            border-right: 150px solid #dcdcdc;
-            border-bottom: 100px solid #d3d3d3;
+            /* Framsidan har olika pastellrosa nyanser för 3D-effekt */
+            border-left: 150px solid #fce4ec; /* Vänster sidokil */
+            border-right: 150px solid #fce4ec; /* Höger sidokil */
+            border-bottom: 100px solid #f8bbd0; /* Bottenkil */
             border-top: 100px solid transparent;
             z-index: 3;
-            pointer-events: none;
+            pointer-events: none; /* Man kan inte klicka på framsidan */
+            border-radius: 0 0 4px 4px;
         }
 
-        /* Pappret/Inbjudan inuti kuvertet */
+        /* --- DESIGN FÖR BREVET/PAPPRET (dolt inuti) --- */
         .letter {
             position: absolute;
             top: 10px;
@@ -102,85 +78,153 @@
             width: 280px;
             height: 180px;
             background: white;
-            z-index: 2;
-            transition: transform 0.8s ease-in-out 0.6s, height 0.8s ease-in-out 0.6s;
+            z-index: 2; /* Ligger bakom framsidan */
+            transition: transform 1s ease-in-out 0.8s, height 1s ease-in-out 0.8s;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             overflow: hidden;
             border-radius: 2px;
         }
 
-        /* Texten på pappret */
+        /* Texten på inbjudan */
         .letter h1 {
             font-size: 22px;
             margin-top: 0;
-            color: #333;
+            color: #ec407a; /* Mörkare rosa för rubrik */
+            font-family: 'Georgia', serif; /* Lite finare typsnitt för rubrik */
         }
         .letter p {
             font-size: 14px;
             color: #555;
-            line-height: 1.5;
-            margin: 8px 0;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .letter strong {
+            color: #d81b60; /* Färg på fetstilad text */
         }
 
-        /* Animationerna som sker när man öppnar */
+        /* --- ANIMATIONSKLASSER (läggs till med JS) --- */
         .envelope-wrapper.open .flap {
-            transform: rotateX(180deg);
-            z-index: 1; /* Locket fälls bakom pappret */
+            transform: rotateX(180deg); /* Öppnar locket */
+            z-index: 1; /* Flyttar locket bakom brevet */
         }
         .envelope-wrapper.open .letter {
-            transform: translateY(-160px); /* Skickar upp pappret */
-            height: 320px; /* Gör pappret längre så all text får plats */
-            z-index: 5;
+            transform: translateY(-160px); /* Skickar upp brevet */
+            height: 330px; /* Gör brevet längre så all text får plats */
+            z-index: 5; /* Flyttar brevet framför allt */
         }
+
+        /* --- DESIGN FÖR LÖSENORDSRUTAN (Pastellrosa) --- */
+        #password-container {
+            background-color: #f8bbd0; /* Matchande rosa ruta */
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: opacity 0.5s ease-out; /* För att tona ut rutan */
+        }
+
+        #password-container h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        input[type="password"] {
+            padding: 12px;
+            width: 220px;
+            border: 2px solid #f48fb1; /* Lite mörkare rosa ram */
+            border-radius: 25px; /* Runda hörn på fältet */
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Tar bort blå ram när man klickar i fältet */
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ec407a;
+        }
+
+        button {
+            padding: 10px 25px;
+            /* En mörkare, poppig rosa för knappen */
+            background-color: #ec407a; 
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #d81b60; /* Mörkare när man för musen över */
+        }
+
+        .error-msg {
+            color: #b71c1c; /* Mörkröd färg för felmeddelande */
+            font-size: 14px;
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
     </style>
 </head>
 <body>
 
-    <div id="login-container">
-        <h2>Lås upp inbjudan</h2>
-        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
-        <br>
-        <button onclick="checkPassword()">Öppna kuvertet</button>
-        <p id="errorMsg" class="error-msg">Fel lösenord, försök igen!</p>
-    </div>
-
-    <div id="invitation-container">
+    <div id="envelope-container">
         <div class="envelope-wrapper" id="envelope">
             <div class="flap"></div>
             
             <div class="letter">
                 <h1>Min Examen!</h1>
-                <p>Äntligen är det dags, och jag vill fira det med er!</p>
-                <p><strong>Datum:</strong> 15 Juni</p>
+                <p>Varmt välkomna att fira min stora dag med mig!</p>
+                <p><strong>Datum:</strong> 15 Juni 2026</p>
                 <p><strong>Tid:</strong> Kl 14:00 - sent</p>
-                <p><strong>Plats:</strong> Hemma hos mig</p>
-                <p>O.S.A senast den 1 Juni via sms.</p>
-                <p><i>Varmt välkomna!</i></p>
+                <p><strong>Plats:</strong> Min trädgård</p>
+                <p>Läs mer information och OSA senast den 1 Maj.</p>
+                <p><i>Kramar!</i></p>
             </div>
             
             <div class="front"></div>
         </div>
     </div>
 
+    <div id="password-container">
+        <h3>Lås upp inbjudan</h3>
+        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
+        <button onclick="checkPassword()">Öppna</button>
+        <p id="errorMsg" class="error-msg">Fel lösenord, försök igen!</p>
+    </div>
+
     <script>
         function checkPassword() {
             var pass = document.getElementById("passwordInput").value;
             
-            // HÄR ÄNDRAR DU LÖSENORDET (just nu är det "examen2026")
-            if (pass === "examen2026") {
-                // Dölj inloggningen och visa kuvertet
-                document.getElementById("login-container").style.display = "none";
-                document.getElementById("invitation-container").style.display = "block";
+            // --- ÄNDRA DITT LÖSENORD HÄR (just nu: rosa) ---
+            if (pass === "rosa") {
+                // 1. Dölj felmeddelande om det visades innan
+                document.getElementById("errorMsg").style.display = "none";
                 
-                // Starta animationen efter en liten, liten paus
-                setTimeout(function() {
-                    document.getElementById("envelope").classList.add("open");
-                }, 100);
+                // 2. Starta kuvertanimationen
+                document.getElementById("envelope").classList.add("open");
+                
+                // 3. Tona ut och ta bort lösenordsrutan efter en stund
+                var pwdContainer = document.getElementById("password-container");
+                pwdContainer.style.opacity = "0";
+                setTimeout(function(){
+                    pwdContainer.style.display = "none";
+                }, 500); // Tar bort den helt efter 0.5 sekunder
+                
             } else {
-                // Visa felmeddelande
+                // Visa felmeddelande om lösenordet är fel
                 document.getElementById("errorMsg").style.display = "block";
             }
         }

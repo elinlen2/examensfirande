@@ -19,20 +19,22 @@
 
         #envelope-container {
             perspective: 1000px;
-            margin-bottom: 30px;
             position: relative;
+            width: 300px;
+            height: 200px;
             z-index: 10;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 300px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             background-color: #f8bbd0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             border-radius: 0 0 10px 10px;
         }
 
+        /* Locket */
         .flap {
             position: absolute;
             top: 0;
@@ -43,40 +45,36 @@
             border-right: 150px solid transparent;
             border-top: 120px solid #f48fb1; 
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
-            z-index: 4;
+            transition: transform 0.8s ease-in-out;
+            z-index: 4; /* Ligger överst när det är stängt */
         }
 
-        /* Detta är "fickan" som döljer pappret */
+        /* Fickan som döljer pappret */
         .letter-container {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Detta gör att inget syns utanför kuvertet */
             z-index: 2;
         }
 
         .letter {
             position: absolute;
-            top: 0; /* Startar exakt vid kanten */
+            top: 5px; /* Startposition inuti */
             left: 10px;
             width: 280px;
             height: 180px;
             background: white;
-            transform: translateY(0); 
-            transition: transform 2.5s ease-in-out 0.7s, height 2.5s ease-in-out 0.7s;
-            box-sizing: border-box;
             padding: 20px;
             text-align: center;
+            box-sizing: border-box;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 2px;
+            transition: transform 2.5s ease-in-out 0.8s, height 2.5s ease-in-out 0.8s;
         }
 
-        .letter h1 { font-size: 18px; color: #ec407a; margin-top: 0; }
-        .letter p { font-size: 13px; color: #555; margin: 5px 0; }
-
+        /* Kuvertets framsida */
         .front {
             position: absolute;
             bottom: 0;
@@ -87,46 +85,44 @@
             border-right: 150px solid #fce4ec; 
             border-bottom: 110px solid #f8bbd0; 
             border-top: 90px solid transparent;
-            z-index: 3;
+            z-index: 3; /* Ligger framför pappret */
             pointer-events: none;
         }
 
-        /* ÖPPNINGS-EFFEKT */
-        .envelope-wrapper.open .flap {
+        /* Animation när det öppnas */
+        .open .flap {
             transform: rotateX(180deg);
-            z-index: 1;
+            z-index: 1; /* Hamnar bakom när det öppnats */
         }
 
-        .envelope-wrapper.open .letter-container {
-            overflow: visible; /* Tillåter pappret att komma ut ur fickan */
+        .open .letter-container {
+            overflow: visible; /* Tillåter pappret att glida ut */
         }
 
-        .envelope-wrapper.open .letter {
-            transform: translateY(-180px); /* Åker upp lagom mycket för mobil */
-            height: 350px; 
-            z-index: 5;
+        .open .letter {
+            transform: translateY(-200px); /* Åker UPPÅT */
+            height: 380px; /* Blir längre för all text */
+            z-index: 5; /* Hamnar framför allt när det kommit ut */
         }
 
         #password-container {
-            background-color: #f8bbd0;
+            margin-top: 30px;
+            background: #f8bbd0;
             padding: 20px;
             border-radius: 15px;
             text-align: center;
             width: 260px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 20;
         }
 
-        /* 16px font-size stoppar zoomen på iPhone/Android */
         input {
+            width: 80%;
             padding: 12px;
+            font-size: 16px; /* Viktigt för mobilzoom! */
             border-radius: 20px;
             border: 1px solid #f48fb1;
             margin-bottom: 10px;
-            text-align: center;
-            font-size: 16px; 
-            width: 80%;
             outline: none;
-            background-color: white;
         }
 
         button {
@@ -137,7 +133,6 @@
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
         }
     </style>
 </head>
@@ -149,11 +144,10 @@
             
             <div class="letter-container">
                 <div class="letter">
-                    <h1>Min Examen!</h1>
+                    <h1 style="color:#ec407a; margin-top:0;">Min Examen!</h1>
                     <p>Välkommen på firande!</p>
                     <p><strong>Datum:</strong> 15 Juni</p>
                     <p><strong>Tid:</strong> 14:00</p>
-                    <p><strong>Plats:</strong> Min trädgård</p>
                     <p>Hoppas vi ses!</p>
                 </div>
             </div>
@@ -163,7 +157,7 @@
     </div>
 
     <div id="password-container">
-        <h3 style="color: white; margin: 0 0 10px 0;">Skriv lösenord</h3>
+        <h3 style="color: white; margin-top: 0;">Skriv lösenord</h3>
         <input type="password" id="passwordInput" placeholder="Lösenord">
         <br>
         <button onclick="checkPassword()">Öppna</button>

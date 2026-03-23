@@ -47,6 +47,7 @@
             z-index: 4;
         }
 
+        /* Detta är "fickan" som döljer pappret */
         .letter-container {
             position: absolute;
             width: 100%;
@@ -59,14 +60,13 @@
 
         .letter {
             position: absolute;
-            /* ÄNDRING HÄR: Startar 5px från toppen inuti kuvertet */
-            top: 5px; 
+            top: 0; /* Startar exakt vid kanten */
             left: 10px;
             width: 280px;
             height: 180px;
             background: white;
             transform: translateY(0); 
-            transition: transform 2.5s ease-in-out 0.7s;
+            transition: transform 2.5s ease-in-out 0.7s, height 2.5s ease-in-out 0.7s;
             box-sizing: border-box;
             padding: 20px;
             text-align: center;
@@ -91,21 +91,20 @@
             pointer-events: none;
         }
 
+        /* ÖPPNINGS-EFFEKT */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
         .envelope-wrapper.open .letter-container {
-            /* Gör att pappret kan synas ovanför kuvertet när det åker upp */
-            overflow: visible;
+            overflow: visible; /* Tillåter pappret att komma ut ur fickan */
         }
 
         .envelope-wrapper.open .letter {
-            /* Åker upp 220px från sin startposition */
-            transform: translateY(-220px); 
-            z-index: 5;
+            transform: translateY(-180px); /* Åker upp lagom mycket för mobil */
             height: 350px; 
+            z-index: 5;
         }
 
         #password-container {
@@ -117,6 +116,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
+        /* 16px font-size stoppar zoomen på iPhone/Android */
         input {
             padding: 12px;
             border-radius: 20px;
@@ -126,6 +126,7 @@
             font-size: 16px; 
             width: 80%;
             outline: none;
+            background-color: white;
         }
 
         button {
@@ -152,6 +153,7 @@
                     <p>Välkommen på firande!</p>
                     <p><strong>Datum:</strong> 15 Juni</p>
                     <p><strong>Tid:</strong> 14:00</p>
+                    <p><strong>Plats:</strong> Min trädgård</p>
                     <p>Hoppas vi ses!</p>
                 </div>
             </div>

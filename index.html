@@ -12,26 +12,26 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             overflow: hidden;
         }
 
         #envelope-container {
-            perspective: 1000px;
             position: relative;
             width: 300px;
             height: 200px;
-            z-index: 10;
+            margin-bottom: 50px;
         }
 
-        .envelope-wrapper {
+        /* Själva kuvertets bas (baksidan) */
+        .envelope {
             position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: #f8bbd0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 300px;
+            height: 200px;
+            background-color: #f8bbd0; /* Lite mörkare rosa */
             border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         /* Locket */
@@ -45,82 +45,68 @@
             border-right: 150px solid transparent;
             border-top: 120px solid #f48fb1; 
             transform-origin: top;
-            transition: transform 0.8s ease-in-out;
-            z-index: 4; /* Ligger överst när det är stängt */
+            transition: transform 0.6s ease-in-out;
+            z-index: 3; /* Ligger över pappret när det är stängt */
         }
 
-        /* Fickan som döljer pappret */
-        .letter-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Detta gör att inget syns utanför kuvertet */
-            z-index: 2;
-        }
-
-        .letter {
-            position: absolute;
-            /* ÄNDRING: Startar precis vid botten av fickan så den inte kan sticka ut */
-            top: 10px; 
-            left: 10px;
-            width: 280px;
-            height: 180px;
-            background: white;
-            padding: 20px;
-            text-align: center;
-            box-sizing: border-box;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            /* Mjuk glid-effekt */
-            transition: transform 2.5s ease-in-out 0.8s, height 2.5s ease-in-out 0.8s;
-       
-
-        /* Kuvertets framsida */
+        /* Kuvertets framsida (V-formen som döljer pappret) */
         .front {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid #fce4ec; 
+            border-left: 150px solid #fce4ec; /* Ljusrosa */
             border-right: 150px solid #fce4ec; 
             border-bottom: 110px solid #f8bbd0; 
             border-top: 90px solid transparent;
-            z-index: 3; /* Ligger framför pappret */
-            pointer-events: none;
+            z-index: 4; /* Ligger ALLTID framför pappret */
         }
 
-        /* Animation när det öppnas */
+        /* BREVET */
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 280px;
+            height: 180px;
+            background: white;
+            z-index: 2; /* Ligger mellan baksidan och framsidan */
+            transition: transform 2s ease-in-out 0.8s, height 2s ease-in-out 0.8s;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .letter h1 { font-size: 18px; color: #ec407a; margin-top: 0; }
+        .letter p { font-size: 14px; color: #555; margin: 8px 0; }
+
+        /* ÖPPNA-ANIMATION */
         .open .flap {
             transform: rotateX(180deg);
-            z-index: 1; /* Hamnar bakom när det öppnats */
-        }
-
-        .open .letter-container {
-            overflow: visible; /* Tillåter pappret att glida ut */
+            z-index: 1; /* Hamnar bakom när det öppnas */
         }
 
         .open .letter {
-            transform: translateY(-200px); /* Åker UPPÅT */
-            height: 380px; /* Blir längre för all text */
-            z-index: 5; /* Hamnar framför allt när det kommit ut */
+            transform: translateY(-180px); /* Glider uppåt */
+            height: 350px; /* Växer */
+            z-index: 5; /* Hamnar framför allt när det glidit ut */
         }
 
-        #password-container {
-            margin-top: 30px;
+        /* LÖSENORD */
+        #password-box {
             background: #f8bbd0;
             padding: 20px;
             border-radius: 15px;
             text-align: center;
             width: 260px;
-            z-index: 20;
         }
 
         input {
             width: 80%;
             padding: 12px;
-            font-size: 16px; /* Viktigt för mobilzoom! */
+            font-size: 16px; /* Stoppar iPhone-zoom */
             border-radius: 20px;
             border: 1px solid #f48fb1;
             margin-bottom: 10px;
@@ -133,44 +119,42 @@
             color: white;
             border: none;
             border-radius: 20px;
-            cursor: pointer;
             font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
     <div id="envelope-container">
-        <div class="envelope-wrapper" id="envelope">
+        <div class="envelope" id="myEnvelope">
             <div class="flap"></div>
             
-            <div class="letter-container">
-                <div class="letter">
-                    <h1 style="color:#ec407a; margin-top:0;">Min Examen!</h1>
-                    <p>Välkommen på firande!</p>
-                    <p><strong>Datum:</strong> 15 Juni</p>
-                    <p><strong>Tid:</strong> 14:00</p>
-                    <p>Hoppas vi ses!</p>
-                </div>
+            <div class="letter">
+                <h1>Min Examen!</h1>
+                <p>Varmt välkomna på firande!</p>
+                <p><strong>Datum:</strong> 15 Juni 2026</p>
+                <p><strong>Tid:</strong> Kl 14:00</p>
+                <p>Hoppas vi ses!</p>
             </div>
             
             <div class="front"></div>
         </div>
     </div>
 
-    <div id="password-container">
-        <h3 style="color: white; margin-top: 0;">Skriv lösenord</h3>
-        <input type="password" id="passwordInput" placeholder="Lösenord">
+    <div id="password-box">
+        <h3 style="color: white; margin-top: 0;">Lösenord</h3>
+        <input type="password" id="passInput" placeholder="Lösenord">
         <br>
-        <button onclick="checkPassword()">Öppna</button>
+        <button onclick="openLetter()">Öppna</button>
     </div>
 
     <script>
-        function checkPassword() {
-            var pass = document.getElementById("passwordInput").value;
-            if (pass.toLowerCase() === "rosa") {
-                document.getElementById("envelope").classList.add("open");
-                document.getElementById("password-container").style.display = "none";
+        function openLetter() {
+            var p = document.getElementById("passInput").value;
+            if(p.toLowerCase() === "rosa") {
+                document.getElementById("myEnvelope").classList.add("open");
+                document.getElementById("password-box").style.display = "none";
             } else {
                 alert("Fel lösenord!");
             }

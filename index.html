@@ -12,23 +12,22 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             margin: 0;
-            overflow-x: hidden; /* Förhindrar darr i sidled på mobilen */
+            overflow: hidden;
         }
 
-        /* Behållaren - anpassas efter skärmbredd */
         #envelope-container {
             perspective: 1000px;
+            margin-bottom: 30px;
             position: relative;
-            width: 320px; /* Standardbredd */
-            margin-bottom: 50px;
+            z-index: 10;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 100%;
-            height: 200px;
+            width: 320px;
+            height: 220px;
             background-color: #f8bbd0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             border-radius: 0 0 10px 10px;
@@ -43,13 +42,13 @@
             height: 0;
             border-left: 160px solid transparent;
             border-right: 160px solid transparent;
-            border-top: 120px solid #f48fb1; 
+            border-top: 130px solid #f48fb1; 
             transform-origin: top;
             transition: transform 0.8s ease-in-out;
             z-index: 4;
         }
 
-        /* Framsidan */
+        /* Framsidan som döljer pappret */
         .front {
             position: absolute;
             bottom: 0;
@@ -58,85 +57,69 @@
             height: 0;
             border-left: 160px solid #fce4ec; 
             border-right: 160px solid #fce4ec; 
-            border-bottom: 110px solid #f8bbd0; 
-            border-top: 90px solid transparent;
+            border-bottom: 120px solid #f8bbd0; 
+            border-top: 100px solid transparent;
             z-index: 3;
             border-radius: 0 0 10px 10px;
         }
 
-        /* Brevet - Anpassat för att inte bli för brett */
+        /* BREVET - Nu med height: 0 och overflow hidden */
         .letter {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            right: 10px; /* Använder right istället för fast bredd */
-            height: 0px;
+            bottom: 10px; /* Startar i botten av kuvertet */
+            left: 15px;
+            width: 290px;
+            height: 0px; /* Helt dolt från början */
             background: white;
             z-index: 2;
-            transition: transform 2.5s ease-in-out 0.8s, height 2.5s ease-in-out 0.8s;
+            transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
             box-sizing: border-box;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
+            overflow: hidden; /* Gör att texten inte syns när height är 0 */
         }
 
-        .letter h1 { font-size: 1.2rem; color: #ec407a; margin-top: 0; }
-        .letter p { font-size: 0.9rem; color: #555; margin: 5px 0; }
+        .letter h1 { font-size: 22px; color: #ec407a; margin-top: 0; font-family: 'Georgia', serif; }
+        .letter p { font-size: 14px; color: #555; margin: 8px 0; line-height: 1.4; }
 
-        /* Mobil-specifika justeringar */
-        @media (max-width: 400px) {
-            #envelope-container {
-                width: 280px; /* Smalare kuvert på små telefoner */
-            }
-            .flap {
-                border-left-width: 140px;
-                border-right-width: 140px;
-            }
-            .front {
-                border-left-width: 140px;
-                border-right-width: 140px;
-            }
-            .letter h1 { font-size: 1rem; }
-            .letter p { font-size: 0.8rem; }
-        }
-
-        /* Animation */
+        /* Animation när det öppnas */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-240px); 
-            height: 340px; 
+            transform: translateY(-280px); /* Åker uppåt */
+            height: 380px; /* Växer fram långsamt */
             z-index: 5;
         }
 
+        /* Lösenordsrutan */
         #password-container {
             background-color: #f8bbd0;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
-            width: 80%;
-            max-width: 250px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 20;
         }
 
         input {
-            width: 90%;
-            padding: 10px;
-            border-radius: 20px;
+            padding: 12px;
+            border-radius: 25px;
             border: 2px solid #f48fb1;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-align: center;
+            outline: none;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px 25px;
             background: #ec407a;
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -147,24 +130,26 @@
     <div id="envelope-container">
         <div class="envelope-wrapper" id="envelope">
             <div class="flap"></div>
+            
             <div class="letter">
                 <h1>Min Examen!</h1>
-                <p>Välkommen på firande!</p>
+                <p>Varmt välkomna att fira min stora dag med mig!</p>
                 <p><strong>Datum:</strong> 15 Juni 2026</p>
-                <p><strong>Tid:</strong> 14:00</p>
+                <p><strong>Tid:</strong> Kl 14:00 - sent</p>
                 <p><strong>Plats:</strong> Min trädgård</p>
-                <p>OSA senast 1 Maj.</p>
+                <p>Läs mer information och OSA senast den 1 Maj.</p>
                 <p><i>Kramar!</i></p>
             </div>
+            
             <div class="front"></div>
         </div>
     </div>
 
     <div id="password-container">
-        <h3 style="color: white; margin-top: 0;">Lösenord</h3>
-        <input type="password" id="passwordInput" placeholder="Skriv här...">
+        <h3 style="color: white; margin: 0 0 15px 0;">Lås upp inbjudan</h3>
+        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
         <br>
-        <button onclick="checkPassword()">Öppna</button>
+        <button onclick="checkPassword()">Öppna kuvertet</button>
     </div>
 
     <script>

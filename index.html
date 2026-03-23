@@ -5,35 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Min Examensinbjudan</title>
     <style>
-        /* Grundinställningar - mjuk bakgrund för hela sidan */
+        /* Grundinställningar */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fef1f5; /* En väldigt ljus, mjuk rosa */
+            background-color: #fef1f5;
             display: flex;
-            flex-direction: column; /* Staplar kuvert och inloggning på höjden */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden; /* Förhindrar scrollning under animationen */
+            overflow: hidden;
         }
 
-        /* --- DESIGN FÖR KUVERTET (alltid synligt) --- */
+        /* --- DESIGN FÖR KUVERTET --- */
         #envelope-container {
             perspective: 1000px;
-            margin-bottom: 30px; /* Mellanrum till inloggningsrutan */
+            margin-bottom: 30px;
             position: relative;
-            margin-top: 100px; /* Ger plats åt pappret som ska åka upp */
+            margin-top: 50px;
         }
 
         .envelope-wrapper {
             position: relative;
             width: 300px;
             height: 200px;
-            /* Pastellrosa basfärg för insidan av kuvertet */
-            background-color: #fce4ec; 
+            background-color: #f8bbd0; /* Baksidan av kuvertet */
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-radius: 4px;
+            border-radius: 0 0 10px 10px;
         }
 
         /* Kuvertets lock (flap) */
@@ -45,32 +44,28 @@
             height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            /* Locket är lite mörkare pastellrosa */
-            border-top: 120px solid #f8bbd0; 
+            border-top: 120px solid #f48fb1; 
             transform-origin: top;
-            transition: transform 0.8s ease-in-out;
-            z-index: 4; /* Ligger överst från början */
-            border-radius: 4px 4px 0 0;
+            transition: transform 0.6s ease-in-out;
+            z-index: 4; /* Ligger överst tills det öppnas */
         }
 
-        /* Kuvertets framsida */
+        /* Kuvertets framsida (Fickan som pappret ligger i) */
         .front {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            /* Framsidan har olika pastellrosa nyanser för 3D-effekt */
-            border-left: 150px solid #fce4ec; /* Vänster sidokil */
-            border-right: 150px solid #fce4ec; /* Höger sidokil */
-            border-bottom: 100px solid #f8bbd0; /* Bottenkil */
-            border-top: 100px solid transparent;
-            z-index: 3;
-            pointer-events: none; /* Man kan inte klicka på framsidan */
-            border-radius: 0 0 4px 4px;
+            border-left: 150px solid #fce4ec; 
+            border-right: 150px solid #fce4ec; 
+            border-bottom: 110px solid #f8bbd0; 
+            border-top: 90px solid transparent;
+            z-index: 3; /* Ligger framför pappret men bakom locket */
+            border-radius: 0 0 10px 10px;
         }
 
-        /* --- DESIGN FÖR BREVET/PAPPRET (dolt inuti) --- */
+        /* --- DESIGN FÖR PAPPRET --- */
         .letter {
             position: absolute;
             top: 10px;
@@ -78,103 +73,87 @@
             width: 280px;
             height: 180px;
             background: white;
-            z-index: 2; /* Ligger bakom framsidan */
-            transition: transform 1s ease-in-out 0.8s, height 1s ease-in-out 0.8s;
+            z-index: 2; /* Ligger inuti fickan */
+            transition: transform 0.8s ease-in-out;
             box-sizing: border-box;
             padding: 25px 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
             border-radius: 2px;
         }
 
-        /* Texten på inbjudan */
         .letter h1 {
-            font-size: 22px;
+            font-size: 20px;
             margin-top: 0;
-            color: #ec407a; /* Mörkare rosa för rubrik */
-            font-family: 'Georgia', serif; /* Lite finare typsnitt för rubrik */
+            color: #ec407a;
         }
         .letter p {
             font-size: 14px;
             color: #555;
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-        .letter strong {
-            color: #d81b60; /* Färg på fetstilad text */
+            line-height: 1.5;
+            margin: 8px 0;
         }
 
-        /* --- ANIMATIONSKLASSER (läggs till med JS) --- */
+        /* --- ANIMATIONER --- */
         .envelope-wrapper.open .flap {
-            transform: rotateX(180deg); /* Öppnar locket */
-            z-index: 1; /* Flyttar locket bakom brevet */
+            transform: rotateX(180deg);
+            z-index: 1; /* Flyttas bakom när det öppnas */
         }
         .envelope-wrapper.open .letter {
-            transform: translateY(-160px); /* Skickar upp brevet */
-            height: 330px; /* Gör brevet längre så all text får plats */
-            z-index: 5; /* Flyttar brevet framför allt */
+            transform: translateY(-160px); /* Åker upp ur kuvertet */
+            height: 300px;
+            z-index: 5; /* Hamnar framför allt när det är ute */
         }
 
-        /* --- DESIGN FÖR LÖSENORDSRUTAN (Pastellrosa) --- */
+        /* --- LÖSENORDSRUTAN --- */
         #password-container {
-            background-color: #f8bbd0; /* Matchande rosa ruta */
+            background-color: #f8bbd0;
             padding: 20px 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
-            transition: opacity 0.5s ease-out; /* För att tona ut rutan */
+            transition: opacity 0.5s ease-out;
         }
 
         #password-container h3 {
             margin-top: 0;
             color: #fff;
             font-size: 18px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         input[type="password"] {
             padding: 12px;
-            width: 220px;
-            border: 2px solid #f48fb1; /* Lite mörkare rosa ram */
-            border-radius: 25px; /* Runda hörn på fältet */
+            width: 200px;
+            border: 2px solid #f48fb1;
+            border-radius: 25px;
             font-size: 16px;
-            margin-bottom: 15px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Tar bort blå ram när man klickar i fältet */
-        input[type="password"]:focus {
+            margin-bottom: 10px;
             outline: none;
-            border-color: #ec407a;
+            text-align: center;
         }
 
         button {
             padding: 10px 25px;
-            /* En mörkare, poppig rosa för knappen */
-            background-color: #ec407a; 
+            background-color: #ec407a;
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            transition: background-color 0.3s;
         }
+        
         button:hover {
-            background-color: #d81b60; /* Mörkare när man för musen över */
+            background-color: #d81b60;
         }
 
         .error-msg {
-            color: #b71c1c; /* Mörkröd färg för felmeddelande */
+            color: #b71c1c;
             font-size: 14px;
             display: none;
             margin-top: 10px;
             font-weight: bold;
         }
-        
     </style>
 </head>
 <body>
@@ -187,9 +166,8 @@
                 <h1>Min Examen!</h1>
                 <p>Varmt välkomna att fira min stora dag med mig!</p>
                 <p><strong>Datum:</strong> 15 Juni 2026</p>
-                <p><strong>Tid:</strong> Kl 14:00 - sent</p>
+                <p><strong>Tid:</strong> Kl 14:00</p>
                 <p><strong>Plats:</strong> Min trädgård</p>
-                <p>Läs mer information och OSA senast den 1 Maj.</p>
                 <p><i>Kramar!</i></p>
             </div>
             
@@ -199,7 +177,8 @@
 
     <div id="password-container">
         <h3>Lås upp inbjudan</h3>
-        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
+        <input type="password" id="passwordInput" placeholder="Lösenord">
+        <br>
         <button onclick="checkPassword()">Öppna</button>
         <p id="errorMsg" class="error-msg">Fel lösenord, försök igen!</p>
     </div>
@@ -208,23 +187,17 @@
         function checkPassword() {
             var pass = document.getElementById("passwordInput").value;
             
-            // --- ÄNDRA DITT LÖSENORD HÄR (just nu: rosa) ---
-            if (pass === "rosa") {
-                // 1. Dölj felmeddelande om det visades innan
+            // Lösenordet är: rosa
+            if (pass.toLowerCase() === "rosa") {
                 document.getElementById("errorMsg").style.display = "none";
-                
-                // 2. Starta kuvertanimationen
                 document.getElementById("envelope").classList.add("open");
                 
-                // 3. Tona ut och ta bort lösenordsrutan efter en stund
                 var pwdContainer = document.getElementById("password-container");
                 pwdContainer.style.opacity = "0";
                 setTimeout(function(){
                     pwdContainer.style.display = "none";
-                }, 500); // Tar bort den helt efter 0.5 sekunder
-                
+                }, 500);
             } else {
-                // Visa felmeddelande om lösenordet är fel
                 document.getElementById("errorMsg").style.display = "block";
             }
         }

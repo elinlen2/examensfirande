@@ -62,7 +62,8 @@
 
         .letter {
             position: absolute;
-            top: 5px; /* Startposition inuti */
+            /* ÄNDRING: Startar precis vid botten av fickan så den inte kan sticka ut */
+            top: 10px; 
             left: 10px;
             width: 280px;
             height: 180px;
@@ -71,8 +72,9 @@
             text-align: center;
             box-sizing: border-box;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* Mjuk glid-effekt */
             transition: transform 2.5s ease-in-out 0.8s, height 2.5s ease-in-out 0.8s;
-        }
+       
 
         /* Kuvertets framsida */
         .front {

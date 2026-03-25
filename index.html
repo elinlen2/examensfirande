@@ -24,6 +24,7 @@
             margin-bottom: 50px;
         }
 
+        /* DETTA ÄR FICKAN */
         .envelope-wrapper {
             position: relative;
             width: 100%;
@@ -31,6 +32,9 @@
             background-color: #f8bbd0;
             border-radius: 0 0 10px 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            /* VIKTIGASTE RADEN: Döljer allt papper som är "nere" i kuvertet */
+            overflow: hidden; 
+            z-index: 2;
         }
 
         .flap {
@@ -43,54 +47,41 @@
             border-right: 150px solid transparent;
             border-top: 120px solid #f48fb1; 
             transform-origin: top;
-            transition: transform 0.8s ease-in-out;
-            z-index: 4;
-        }
-
-        /* Framsidan som döljer pappret i botten */
-        .front {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid #fce4ec; 
-            border-right: 150px solid #fce4ec; 
-            border-bottom: 110px solid #f8bbd0; 
-            border-top: 90px solid transparent;
-            z-index: 3;
-            pointer-events: none;
+            transition: transform 0.6s ease-in-out;
+            z-index: 5; /* Locket ligger överst */
         }
 
         .letter {
             position: absolute;
-            top: 20px; /* Startposition inuti kuvertet */
-            left: 15px;
-            width: 270px;
-            height: 250px; /* Lite längre papper för mer text */
+            top: 5px; /* Startar helt nere i fickan */
+            left: 10px;
+            width: 280px;
+            height: 350px; /* Pappret är långt men döljs av wrappern */
             background: white;
-            z-index: 2; /* Bakom fronten */
-            padding: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
             text-align: center;
+            /* HÄR STYR VI FARTEN: 4 sekunder för en riktigt långsam avslöjande effekt */
+            transition: transform 4s ease-in-out 0.8s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            /* HÄR ÄR DEN LÅNGSAMMA RÖRELSEN */
-            transition: transform 3.5s ease-in-out 1s; 
         }
 
-        .letter h1 { font-size: 1.2rem; color: #ec407a; margin-top: 0; }
-        .letter p { font-size: 0.9rem; color: #555; margin: 10px 0; }
+        .letter h1 { font-size: 20px; color: #ec407a; margin-bottom: 20px; }
+        .letter p { font-size: 16px; color: #555; margin: 15px 0; }
 
-        /* När lösenordet är rätt */
+        /* ÖPPNA-ANIMATION */
         .open .flap {
             transform: rotateX(180deg);
-            z-index: 1;
         }
 
         .open .letter {
-            /* Denna rad drar upp pappret långsamt */
-            transform: translateY(-220px); 
-            z-index: 5; /* Hamnar framför kuvertet när det är ute */
+            /* Drar upp pappret så att texten visas lite i taget */
+            transform: translateY(-300px); 
+        }
+
+        /* Denna lilla bit gör att pappret syns ovanför kuvertet när det åker ut */
+        .open .envelope-wrapper {
+            overflow: visible;
         }
 
         #password-container {
@@ -99,6 +90,7 @@
             border-radius: 15px;
             text-align: center;
             width: 260px;
+            z-index: 10;
         }
 
         input {
@@ -108,7 +100,7 @@
             border: 1px solid #f48fb1;
             margin-bottom: 10px;
             text-align: center;
-            font-size: 16px; /* Förhindrar zoom */
+            font-size: 16px; /* Ingen zoom på mobil */
             outline: none;
         }
 
@@ -126,24 +118,23 @@
 <body>
 
     <div id="envelope-container">
+        <div class="flap"></div>
+        
         <div class="envelope-wrapper" id="envelope">
-            <div class="flap"></div>
-            
             <div class="letter">
                 <h1>Min Examen!</h1>
-                <p>Varmt välkomna på firande!</p>
-                <p><strong>När:</strong> 15 Juni kl 14:00</p>
-                <p><strong>Var:</strong> I trädgården</p>
-                <p><i>Hoppas vi ses!</i></p>
+                <p>Välkommen på firande!</p>
+                <p><strong>Datum:</strong> 15 Juni</p>
+                <p><strong>Tid:</strong> 14:00</p>
+                <p><strong>Plats:</strong> Min trädgård</p>
+                <p>Hoppas vi ses!</p>
             </div>
-            
-            <div class="front"></div>
         </div>
     </div>
 
     <div id="password-container">
         <h3 style="color: white; margin-top: 0;">Lösenord</h3>
-        <input type="password" id="passwordInput" placeholder="Lösenord...">
+        <input type="password" id="passwordInput" placeholder="Skriv här...">
         <br>
         <button onclick="checkPassword()">Öppna</button>
     </div>
@@ -152,7 +143,7 @@
         function checkPassword() {
             var pass = document.getElementById("passwordInput").value;
             if (pass.toLowerCase() === "rosa") {
-                document.getElementById("envelope").classList.add("open");
+                document.getElementById("envelope-container").classList.add("open");
                 document.getElementById("password-container").style.display = "none";
             } else {
                 alert("Fel lösenord!");

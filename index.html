@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Min Examensinbjudan</title>
     <style>
         body {
@@ -33,7 +33,6 @@
             border-radius: 0 0 10px 10px;
         }
 
-        /* Locket */
         .flap {
             position: absolute;
             top: 0;
@@ -48,7 +47,6 @@
             z-index: 4;
         }
 
-        /* Framsidan som döljer pappret */
         .front {
             position: absolute;
             bottom: 0;
@@ -63,40 +61,39 @@
             border-radius: 0 0 10px 10px;
         }
 
-        /* BREVET - Nu med height: 0 och overflow hidden */
         .letter {
             position: absolute;
-            bottom: 10px; /* Startar i botten av kuvertet */
+            bottom: 10px; 
             left: 15px;
             width: 290px;
-            height: 0px; /* Helt dolt från början */
+            height: 0px; 
             background: white;
             z-index: 2;
+            /* Långsam animation för att dras upp */
             transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
             box-sizing: border-box;
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden; /* Gör att texten inte syns när height är 0 */
+            overflow: hidden; 
         }
 
         .letter h1 { font-size: 22px; color: #ec407a; margin-top: 0; font-family: 'Georgia', serif; }
         .letter p { font-size: 14px; color: #555; margin: 8px 0; line-height: 1.4; }
 
-        /* Animation när det öppnas */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
-        
+
         .envelope-wrapper.open .letter {
-            transform: translateY(-160px); /* Ändra från -280px till -160px */
-            height: 260px;                /* Ändra från 380px till 260px */
+            /* JUSTERAT: Åker upp lagom mycket (-150px istället för -280px) */
+            transform: translateY(-150px); 
+            /* JUSTERAT: Blir lagom högt (250px istället för 380px) */
+            height: 250px; 
             z-index: 5;
-}
         }
 
-        /* Lösenordsrutan */
         #password-container {
             background-color: #f8bbd0;
             padding: 25px;
@@ -106,17 +103,14 @@
             z-index: 20;
         }
 
-       
         input {
-           padding: 12px;
-           border-radius: 25px;
-           border: 2px solid #f48fb1;
-           margin-bottom: 15px;
-           text-align: center;
-           outline: none;
-           font-size: 16px; /* LÄGG TILL DENNA RAD */
-}
-}
+            padding: 12px;
+            border-radius: 25px;
+            border: 2px solid #f48fb1;
+            margin-bottom: 15px;
+            text-align: center;
+            outline: none;
+            font-size: 16px; /* Stoppar zoom på mobil */
         }
 
         button {
@@ -142,7 +136,7 @@
                 <p><strong>Datum:</strong> 15 Juni 2026</p>
                 <p><strong>Tid:</strong> Kl 14:00 - sent</p>
                 <p><strong>Plats:</strong> Min trädgård</p>
-                <p>Läs mer information och OSA senast den 1 Maj.</p>
+                <p>OSA senast 1 Maj.</p>
                 <p><i>Kramar!</i></p>
             </div>
             
@@ -152,7 +146,7 @@
 
     <div id="password-container">
         <h3 style="color: white; margin: 0 0 15px 0;">Lås upp inbjudan</h3>
-        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
+        <input type="password" id="passwordInput" placeholder="Lösenord">
         <br>
         <button onclick="checkPassword()">Öppna kuvertet</button>
     </div>

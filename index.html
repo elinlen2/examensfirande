@@ -1,118 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
 <meta charset="UTF-8">
-<style>
+<title>Kuvert</title>
 
-body {
-  background: #ffe4ec;
-  font-family: Arial;
-  text-align: center;
-  padding-top: 60px;
+<style>
+body{
+  background:#ffe4ec;
+  text-align:center;
+  font-family:Arial;
+  padding-top:50px;
 }
 
-/* Kuvert container */
-.container {
-  position: relative;
-  width: 320px;
-  height: 220px;
-  margin: auto;
-  z-index: 1;
+/* Input */
+input{
+  padding:12px;
+  font-size:18px;
+  margin:10px;
+}
+
+button{
+  padding:12px 20px;
+  font-size:18px;
+  background:#ff4fa3;
+  color:white;
+  border:none;
+  cursor:pointer;
 }
 
 /* Kuvert */
-.envelope {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #ffb6c1;
-  border-radius: 10px;
-  z-index: 2;
+.envelope{
+  width:320px;
+  height:200px;
+  background:#ff4fa3;
+  margin:40px auto;
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
 }
 
 /* Lock */
-.flap {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #ff69b4;
-  clip-path: polygon(0 0, 50% 50%, 100% 0);
-  transform-origin: top;
-  transition: 1s;
-  z-index: 3;
+.flap{
+  position:absolute;
+  width:320px;
+  height:160px;
+  background:#ff4fa3;
+  top:0;
+  left:0;
+  clip-path: polygon(0 0, 50% 60%, 100% 0);
+  transform-origin:top;
+  transition:1s;
 }
 
 /* Brev */
-.letter {
-  position: absolute;
-  width: 260px;
-  height: 160px;
-  background: white;
-  top: 40px;
-  left: 30px;
-  border-radius: 10px;
-  padding: 15px;
-  transform: translateY(60px);
-  opacity: 0;
-  transition: 1s;
-  z-index: 1;
+.letter{
+  position:absolute;
+  width:260px;
+  height:150px;
+  background:white;
+  left:30px;
+  top:40px;
+  padding:15px;
+  border-radius:10px;
+  transform:translateY(80px);
+  opacity:0;
+  transition:1s;
 }
 
-/* Öppna animation */
-.open .flap {
-  transform: rotateX(180deg);
+/* Öppna */
+.open .flap{
+  transform:rotateX(180deg);
 }
 
-.open .letter {
-  transform: translateY(-20px);
-  opacity: 1;
+.open .letter{
+  transform:translateY(-10px);
+  opacity:1;
 }
-
-/* Input och knapp */
-input, button {
-  position: relative;
-  z-index: 10;
-  margin-top: 20px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-button {
-  background: #ff69b4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-
 </style>
 </head>
 
 <body>
 
-<h2> Öppna kuvertet</h2>
+<h2>Öppna kuvertet</h2>
 <p>Tips: Vilket år är jag född?</p>
-
-<div class="container" id="box">
-  <div class="letter">
-    <h3>🎓 Examensfest 🎓</h3>
-    <p>15 juni kl 18:00</p>
-    <p>Min trädgård</p>
-  </div>
-
-  <div class="envelope"></div>
-  <div class="flap"></div>
-</div>
 
 <input type="password" id="pwd" placeholder="Lösenord">
 <br>
 <button onclick="openEnvelope()">Öppna</button>
 
-<script>
-function openEnvelope() {
-  let p = document.getElementById("pwd").value;
+<div class="envelope" id="env">
+  <div class="flap"></div>
+  <div class="letter">
+    <h3>🎓 Examensfest 🎓</h3>
+    <p>Datum: 15 juni</p>
+    <p>Tid: 18:00</p>
+    <p>Du är inbjuden!</p>
+  </div>
+</div>
 
-  if(p == "2004") {
-    document.getElementById("box").classList.add("open");
+<script>
+function openEnvelope(){
+  var p = document.getElementById("pwd").value;
+
+  if(p == "2004"){
+    document.getElementById("env").classList.add("open");
   } else {
     alert("Fel lösenord");
   }

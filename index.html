@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Kuvert</title>
+<title>Examensinbjudan</title>
 
 <style>
 body{
@@ -36,7 +36,6 @@ button{
   margin:40px auto;
   position:relative;
   border-radius:12px;
-  overflow:hidden;
 }
 
 /* Lock */
@@ -50,6 +49,7 @@ button{
   clip-path: polygon(0 0, 50% 60%, 100% 0);
   transform-origin:top;
   transition:1s;
+  z-index:3;
 }
 
 /* Brev */
@@ -63,25 +63,37 @@ button{
   padding:15px;
   border-radius:10px;
   transform:translateY(80px);
-  opacity:0;
   transition:1s;
+  z-index:2;
+}
+
+/* Kuvert framkant */
+.front{
+  position:absolute;
+  width:320px;
+  height:100px;
+  background:#ff4fa3;
+  bottom:0;
+  left:0;
+  border-radius:0 0 12px 12px;
+  z-index:4;
 }
 
 /* Öppna */
 .open .flap{
   transform:rotateX(180deg);
+  z-index:1;
 }
 
 .open .letter{
-  transform:translateY(-10px);
-  opacity:1;
+  transform:translateY(-60px);
 }
 </style>
 </head>
 
 <body>
 
-<h2>Öppna kuvertet</h2>
+<h2>🔒 Öppna kuvertet</h2>
 <p>Tips: Vilket år är jag född?</p>
 
 <input type="password" id="pwd" placeholder="Lösenord">
@@ -89,20 +101,23 @@ button{
 <button onclick="openEnvelope()">Öppna</button>
 
 <div class="envelope" id="env">
-  <div class="flap"></div>
   <div class="letter">
     <h3>🎓 Examensfest 🎓</h3>
     <p>Datum: 15 juni</p>
     <p>Tid: 18:00</p>
-    <p>Du är inbjuden!</p>
+    <p>Plats: Hemma hos mig</p>
+    <p>OSA senast 1 maj</p>
   </div>
+
+  <div class="flap"></div>
+  <div class="front"></div>
 </div>
 
 <script>
 function openEnvelope(){
   var p = document.getElementById("pwd").value;
 
-  if(p == "2004"){
+  if(p == "2002"){
     document.getElementById("env").classList.add("open");
   } else {
     alert("Fel lösenord");

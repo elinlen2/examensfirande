@@ -2,45 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style>
+<title>Examensinbjudan</title>
 
+<style>
 body {
-  background: #fdeef4;
-  text-align: center;
+  background: #ffe4ec;
   font-family: Arial;
-  padding-top: 100px;
+  text-align: center;
+  padding-top: 80px;
 }
 
+/* Container */
 .container {
   position: relative;
-  width: 300px;
-  height: 200px;
+  width: 320px;
+  height: 220px;
   margin: auto;
 }
 
-/* Brevet (bakom) */
-.letter {
-  position: absolute;
-  width: 260px;
-  height: 160px;
-  background: white;
-  top: 40px;
-  left: 20px;
-  border-radius: 10px;
-  padding: 10px;
-  box-sizing: border-box;
-  transform: translateY(60px);
-  opacity: 0;
-  transition: 1s;
-}
-
-/* Kuvert botten */
+/* Kuvert bas */
 .envelope {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: pink;
-  clip-path: polygon(0 50%, 50% 100%, 100% 50%, 100% 100%, 0 100%);
+  background: #ffb6c1;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 /* Lock */
@@ -48,13 +35,29 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: hotpink;
+  background: #ff69b4;
   clip-path: polygon(0 0, 50% 50%, 100% 0);
   transform-origin: top;
   transition: 1s;
 }
 
-/* ÖPPNAT */
+/* Brev */
+.letter {
+  position: absolute;
+  width: 260px;
+  height: 160px;
+  background: white;
+  top: 40px;
+  left: 30px;
+  border-radius: 10px;
+  padding: 15px;
+  box-sizing: border-box;
+  transform: translateY(60px);
+  opacity: 0;
+  transition: 1s;
+}
+
+/* När öppnad */
 .open .flap {
   transform: rotateX(180deg);
 }
@@ -64,9 +67,30 @@ body {
   opacity: 1;
 }
 
-</style>
-</head>
+/* Input */
+input {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
+/* Knapp */
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+
+</head>
 <body>
 
 <h2>🔒 Öppna ditt kuvert</h2>
@@ -75,15 +99,17 @@ body {
 <div class="container" id="box">
   <div class="letter">
     <h3>🎓 Examensfest 🎓</h3>
-    <p>15 juni kl 18:00</p>
-    <p>Min trädgård</p>
+    <p>Datum: 15 juni</p>
+    <p>Tid: 18:00</p>
+    <p>Plats: Min trädgård</p>
+    <p>OSA senast 1 maj</p>
   </div>
 
   <div class="envelope"></div>
   <div class="flap"></div>
 </div>
 
-<input type="password" id="pwd">
+<input type="password" id="pwd" placeholder="Skriv lösenord här">
 <br>
 <button onclick="openEnvelope()">Öppna</button>
 
@@ -91,10 +117,10 @@ body {
 function openEnvelope() {
   let p = document.getElementById("pwd").value;
 
-  if(p.toLowerCase() == "2004") {
+  if(p == "2004") {  // ÄNDRA till ditt riktiga lösenord
     document.getElementById("box").classList.add("open");
   } else {
-    alert("Fel lösenord");
+    alert("Fel lösenord!");
   }
 }
 </script>

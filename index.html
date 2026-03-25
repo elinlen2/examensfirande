@@ -9,7 +9,8 @@ body { text-align: center; font-family: Arial; }
 
 <body>
 
-<h2>Skriv lösenord för att öppna kuvertet</h2>
+<h2>Skriv lösenord för att öppna kuvertet 
+    Tips: Vilket år är jag född? </h2>
 <input type="password" id="pass">
 <button onclick="check()">Öppna kuvert</button>
 
@@ -20,7 +21,7 @@ body { text-align: center; font-family: Arial; }
 
 <script>
 function check() {
-    if(document.getElementById("pass").value == "rosa123") {
+    if(document.getElementById("pass").value == "2004") {
         document.getElementById("letter").style.display = "block";
     } else {
         alert("Fel lösenord");

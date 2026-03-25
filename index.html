@@ -1,129 +1,162 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<title>Examensinbjudan</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Min Examensinbjudan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fef1f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
 
-<style>
-body{
-  background:#ffe4ec;
-  text-align:center;
-  font-family:Arial;
-  padding-top:50px;
-}
+        #envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
 
-/* Input */
-input{
-  padding:12px;
-  font-size:18px;
-  margin:10px;
-}
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #f8bbd0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
 
-button{
-  padding:12px 20px;
-  font-size:18px;
-  background:#ff4fa3;
-  color:white;
-  border:none;
-  cursor:pointer;
-}
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 120px solid #f48fb1; 
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+            z-index: 4;
+        }
 
-/* Kuvert */
-.envelope{
-  width:320px;
-  height:200px;
-  background:#ff4fa3;
-  margin:40px auto;
-  position:relative;
-  border-radius:12px;
-}
+        .front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid #fce4ec; 
+            border-right: 150px solid #fce4ec; 
+            border-bottom: 110px solid #f8bbd0; 
+            border-top: 90px solid transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
 
-/* Lock */
-.flap{
-  position:absolute;
-  width:320px;
-  height:160px;
-  background:#ff4fa3;
-  top:0;
-  left:0;
-  clip-path: polygon(0 0, 50% 60%, 100% 0);
-  transform-origin:top;
-  transition:1s;
-  z-index:3;
-}
+        .letter {
+            position: absolute;
+            top: 10px; 
+            left: 10px;
+            width: 280px;
+            /* VIKTIGT: Behåller ursprunglig höjd så den inte sticker ut under */
+            height: 180px; 
+            background: white;
+            z-index: 2; 
+            transition: transform 2.0s ease-in-out 0.7s;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-/* Brev */
-.letter{
-  position:absolute;
-  width:260px;
-  height:150px;
-  background:white;
-  left:30px;
-  top:40px;
-  padding:15px;
-  border-radius:10px;
-  transform:translateY(80px);
-  transition:1s;
-  z-index:2;
-}
+        .letter h1 { font-size: 18px; color: #ec407a; margin-top: 0; }
+        .letter p { font-size: 14px; color: #555; margin: 5px 0; }
 
-/* Kuvert framkant */
-.front{
-  position:absolute;
-  width:320px;
-  height:100px;
-  background:#ff4fa3;
-  bottom:0;
-  left:0;
-  border-radius:0 0 12px 12px;
-  z-index:4;
-}
+        .open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
 
-/* Öppna */
-.open .flap{
-  transform:rotateX(180deg);
-  z-index:1;
-}
+        .open .letter {
+            /* Åker bara uppåt, ändrar INTE höjden på själva pappret */
+            transform: translateY(-160px); 
+            z-index: 5;
+        }
 
-.open .letter{
-  transform:translateY(-60px);
-}
-</style>
+        #password-container {
+            background-color: #f8bbd0;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            width: 260px;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid #f48fb1;
+            margin-bottom: 10px;
+            text-align: center;
+            outline: none;
+            /* Denna rad stoppar zoomen */
+            font-size: 16px; 
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #ec407a;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
-
 <body>
 
-<h2>🔒 Öppna kuvertet</h2>
-<p>Tips: Vilket år är jag född?</p>
+    <div id="envelope-container">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="flap"></div>
+            
+            <div class="letter">
+                <h1>Min Examen!</h1>
+                <p>Varmt välkomna!</p>
+                <p><strong>Datum:</strong> 15 Juni</p>
+                <p><strong>Tid:</strong> 14:00</p>
+                <p>Hoppas vi ses!</p>
+            </div>
+            
+            <div class="front"></div>
+        </div>
+    </div>
 
-<input type="password" id="pwd" placeholder="Lösenord">
-<br>
-<button onclick="openEnvelope()">Öppna</button>
+    <div id="password-container">
+        <h3 style="color: white; margin-top: 0;">Lösenord</h3>
+        <input type="password" id="passwordInput" placeholder="Lösenord">
+        <br>
+        <button onclick="checkPassword()">Öppna</button>
+    </div>
 
-<div class="envelope" id="env">
-  <div class="letter">
-    <h3>🎓 Examensfest 🎓</h3>
-    <p>Datum: 15 juni</p>
-    <p>Tid: 18:00</p>
-    <p>Plats: Hemma hos mig</p>
-    <p>OSA senast 1 maj</p>
-  </div>
-
-  <div class="flap"></div>
-  <div class="front"></div>
-</div>
-
-<script>
-function openEnvelope(){
-  var p = document.getElementById("pwd").value;
-
-  if(p == "2002"){
-    document.getElementById("env").classList.add("open");
-  } else {
-    alert("Fel lösenord");
-  }
-}
-</script>
-
+    <script>
+        function checkPassword() {
+            var pass = document.getElementById("passwordInput").value;
+            if (pass.toLowerCase() === "rosa") {
+                document.getElementById("envelope").classList.add("open");
+                document.getElementById("password-container").style.display = "none";
+            } else {
+                alert("Fel lösenord!");
+            }
+        }
+    </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
             border-radius: 0 0 10px 10px;
         }
 
+        /* Locket */
         .flap {
             position: absolute;
             top: 0;
@@ -47,6 +48,7 @@
             z-index: 4;
         }
 
+        /* Framsidan som döljer pappret i botten */
         .front {
             position: absolute;
             bottom: 0;
@@ -61,15 +63,16 @@
             border-radius: 0 0 10px 10px;
         }
 
+        /* PAPPPRET */
         .letter {
             position: absolute;
-            bottom: 10px; 
+            bottom: 25px; /* Sänkt för att garanterat döljas i botten */
             left: 15px;
             width: 290px;
             height: 0px; 
             background: white;
             z-index: 2;
-            /* Långsam animation för att dras upp */
+            /* Långsam glidning uppåt */
             transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
             box-sizing: border-box;
             padding: 20px;
@@ -81,19 +84,21 @@
         .letter h1 { font-size: 22px; color: #ec407a; margin-top: 0; font-family: 'Georgia', serif; }
         .letter p { font-size: 14px; color: #555; margin: 8px 0; line-height: 1.4; }
 
+        /* Animation när det öppnas */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
         .envelope-wrapper.open .letter {
-            /* JUSTERAT: Åker upp lagom mycket (-150px istället för -280px) */
-            transform: translateY(-150px); 
-            /* JUSTERAT: Blir lagom högt (250px istället för 380px) */
-            height: 250px; 
+            /* FIX: Stannar i perfekt höjd istället för i taket */
+            transform: translateY(-170px); 
+            /* FIX: Lagom höjd på pappret */
+            height: 280px; 
             z-index: 5;
         }
 
+        /* Lösenordsrutan */
         #password-container {
             background-color: #f8bbd0;
             padding: 25px;
@@ -110,7 +115,8 @@
             margin-bottom: 15px;
             text-align: center;
             outline: none;
-            font-size: 16px; /* Stoppar zoom på mobil */
+            /* FIX: Stoppar zoom på iPhone/Android */
+            font-size: 16px; 
         }
 
         button {
@@ -136,7 +142,7 @@
                 <p><strong>Datum:</strong> 15 Juni 2026</p>
                 <p><strong>Tid:</strong> Kl 14:00 - sent</p>
                 <p><strong>Plats:</strong> Min trädgård</p>
-                <p>OSA senast 1 Maj.</p>
+                <p>OSA senast den 1 Maj.</p>
                 <p><i>Kramar!</i></p>
             </div>
             
@@ -146,7 +152,7 @@
 
     <div id="password-container">
         <h3 style="color: white; margin: 0 0 15px 0;">Lås upp inbjudan</h3>
-        <input type="password" id="passwordInput" placeholder="Lösenord">
+        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
         <br>
         <button onclick="checkPassword()">Öppna kuvertet</button>
     </div>

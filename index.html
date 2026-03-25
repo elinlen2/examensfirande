@@ -1,167 +1,108 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Min Examensinbjudan</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fef1f5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<title>Graduation Invitation</title>
+<style>
+body {
+  background-color: #fff0f6; /* Ljus rosa bakgrund */
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 100px;
+}
 
-        #envelope-container {
-            perspective: 1000px;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 10;
-        }
+#envelope-container {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  margin: auto;
+  perspective: 1000px;
+}
 
-        .envelope-wrapper {
-            position: relative;
-            width: 320px;
-            height: 220px;
-            background-color: #f8bbd0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-radius: 0 0 10px 10px;
-        }
+#envelope {
+  width: 100%;
+  height: 100%;
+  background-image: url('a_digital_screenshot_of_a_text_message_conversatio.png'); /* Rosa kuvertbild */
+  background-size: cover;
+  border-radius: 15px;
+  transition: transform 1s;
+  transform-origin: top;
+}
 
-        /* Locket */
-        .flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 130px solid #f48fb1; 
-            transform-origin: top;
-            transition: transform 0.8s ease-in-out;
-            z-index: 4;
-        }
+#letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff0f6;
+  border-radius: 15px;
+  padding: 20px;
+  display: none;
+  box-sizing: border-box;
+  border: 2px solid #ff69b4;
+}
 
-        /* Framsidan som döljer pappret */
-        .front {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 160px solid #fce4ec; 
-            border-right: 160px solid #fce4ec; 
-            border-bottom: 120px solid #f8bbd0; 
-            border-top: 100px solid transparent;
-            z-index: 3;
-            border-radius: 0 0 10px 10px;
-        }
+input[type="password"] {
+  padding: 10px;
+  width: 150px;
+  margin-top: 20px;
+}
 
-        /* BREVET - Nu med height: 0 och overflow hidden */
-        .letter {
-            position: absolute;
-            bottom: 10px; /* Startar i botten av kuvertet */
-            left: 15px;
-            width: 290px;
-            height: 0px; /* Helt dolt från början */
-            background: white;
-            z-index: 2;
-            transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
-            box-sizing: border-box;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden; /* Gör att texten inte syns när height är 0 */
-        }
-
-        .letter h1 { font-size: 22px; color: #ec407a; margin-top: 0; font-family: 'Georgia', serif; }
-        .letter p { font-size: 14px; color: #555; margin: 8px 0; line-height: 1.4; }
-
-        /* Animation när det öppnas */
-        .envelope-wrapper.open .flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .envelope-wrapper.open .letter {
-            transform: translateY(-280px); /* Åker uppåt */
-            height: 380px; /* Växer fram långsamt */
-            z-index: 5;
-        }
-
-        /* Lösenordsrutan */
-        #password-container {
-            background-color: #f8bbd0;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            z-index: 20;
-        }
-
-        input {
-            padding: 12px;
-            border-radius: 25px;
-            border: 2px solid #f48fb1;
-            margin-bottom: 15px;
-            text-align: center;
-            outline: none;
-        }
-
-        button {
-            padding: 10px 25px;
-            background: #ec407a;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
 
-    <div id="envelope-container">
-        <div class="envelope-wrapper" id="envelope">
-            <div class="flap"></div>
-            
-            <div class="letter">
-                <h1>Min Examen!</h1>
-                <p>Varmt välkomna att fira min stora dag med mig!</p>
-                <p><strong>Datum:</strong> 15 Juni 2026</p>
-                <p><strong>Tid:</strong> Kl 14:00 - sent</p>
-                <p><strong>Plats:</strong> Min trädgård</p>
-                <p>Läs mer information och OSA senast den 1 Maj.</p>
-                <p><i>Kramar!</i></p>
-            </div>
-            
-            <div class="front"></div>
-        </div>
-    </div>
+<h2>🔒 Du har fått ett säkrat rosa kuvert</h2>
+<p>Skriv lösenordet för att öppna kuvertet</p>
+<p><b>Tips:</b> Något jag alltid dricker</p>
 
-    <div id="password-container">
-        <h3 style="color: white; margin: 0 0 15px 0;">Lås upp inbjudan</h3>
-        <input type="password" id="passwordInput" placeholder="Skriv in lösenord">
-        <br>
-        <button onclick="checkPassword()">Öppna kuvertet</button>
-    </div>
+<div id="envelope-container">
+  <div id="envelope"></div>
+  <div id="letter">
+    <h2>🎓 Examensfest 🎓</h2>
+    <p>Du är inbjuden till min examensfest!</p>
+    <p><b>Datum:</b> 15 juni</p>
+    <p><b>Tid:</b> 18:00</p>
+    <p><b>Plats:</b> [Din adress]</p>
+    <p>OSA senast: [datum]</p>
+    <p>Vi ses där! 🎉</p>
+  </div>
+</div>
 
-    <script>
-        function checkPassword() {
-            var pass = document.getElementById("passwordInput").value;
-            if (pass.toLowerCase() === "rosa") {
-                document.getElementById("envelope").classList.add("open");
-                document.getElementById("password-container").style.display = "none";
-            } else {
-                alert("Fel lösenord!");
-            }
-        }
-    </script>
+<input type="password" id="pwd" placeholder="Skriv lösenord här">
+<br>
+<button onclick="checkPassword()">Öppna kuvert</button>
+
+<script>
+function checkPassword() {
+  var password = document.getElementById("pwd").value;
+
+  if(password.toLowerCase() == "kaffe") {
+    var env = document.getElementById("envelope");
+    var letter = document.getElementById("letter");
+
+    // Kuvert “öppnas”
+    env.style.transform = "rotateX(180deg)";
+    setTimeout(function(){
+      env.style.display = "none";
+      letter.style.display = "block";
+    }, 1000);
+  } else {
+    alert("Fel lösenord, försök igen!");
+  }
+}
+</script>
+
 </body>
 </html>

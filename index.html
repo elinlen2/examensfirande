@@ -2,32 +2,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Examensinbjudan</title>
-
 <style>
+
 body {
   background: #ffe4ec;
   font-family: Arial;
   text-align: center;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
-/* Container */
+/* Kuvert container */
 .container {
   position: relative;
   width: 320px;
   height: 220px;
   margin: auto;
+  z-index: 1;
 }
 
-/* Kuvert bas */
+/* Kuvert */
 .envelope {
   position: absolute;
   width: 100%;
   height: 100%;
   background: #ffb6c1;
   border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  z-index: 2;
 }
 
 /* Lock */
@@ -39,6 +39,7 @@ body {
   clip-path: polygon(0 0, 50% 50%, 100% 0);
   transform-origin: top;
   transition: 1s;
+  z-index: 3;
 }
 
 /* Brev */
@@ -51,13 +52,13 @@ body {
   left: 30px;
   border-radius: 10px;
   padding: 15px;
-  box-sizing: border-box;
   transform: translateY(60px);
   opacity: 0;
   transition: 1s;
+  z-index: 1;
 }
 
-/* När öppnad */
+/* Öppna animation */
 .open .flap {
   transform: rotateX(180deg);
 }
@@ -67,49 +68,42 @@ body {
   opacity: 1;
 }
 
-/* Input */
-input {
+/* Input och knapp */
+input, button {
+  position: relative;
+  z-index: 10;
   margin-top: 20px;
   padding: 10px;
   font-size: 16px;
-  width: 200px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
 }
 
-/* Knapp */
 button {
-  margin-top: 10px;
-  padding: 10px 20px;
   background: #ff69b4;
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
 }
-</style>
 
+</style>
 </head>
+
 <body>
 
-<h2> Öppna ditt kuvert</h2>
-<p><b>Tips:</b> Vilket år är jag född?</p>
+<h2> Öppna kuvertet</h2>
+<p>Tips: Vilket år är jag född?</p>
 
 <div class="container" id="box">
   <div class="letter">
     <h3>🎓 Examensfest 🎓</h3>
-    <p>Datum: 15 juni</p>
-    <p>Tid: 18:00</p>
-    <p>Plats: Min trädgård</p>
-    <p>OSA senast 1 maj</p>
+    <p>15 juni kl 18:00</p>
+    <p>Min trädgård</p>
   </div>
 
   <div class="envelope"></div>
   <div class="flap"></div>
 </div>
 
-<input type="password" id="pwd" placeholder="Skriv lösenord här">
+<input type="password" id="pwd" placeholder="Lösenord">
 <br>
 <button onclick="openEnvelope()">Öppna</button>
 
@@ -117,10 +111,10 @@ button {
 function openEnvelope() {
   let p = document.getElementById("pwd").value;
 
-  if(p == "2004") {  // ÄNDRA till ditt riktiga lösenord
+  if(p == "2004") {
     document.getElementById("box").classList.add("open");
   } else {
-    alert("Fel lösenord!");
+    alert("Fel lösenord");
   }
 }
 </script>

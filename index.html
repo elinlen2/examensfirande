@@ -33,7 +33,7 @@
             border-radius: 0 0 10px 10px;
         }
 
-        /* Locket */
+
         .flap {
             position: absolute;
             top: 0;
@@ -48,7 +48,7 @@
             z-index: 4;
         }
 
-        /* Framsidan som döljer pappret i botten */
+       
         .front {
             position: absolute;
             bottom: 0;
@@ -72,7 +72,7 @@
             height: 0px; 
             background: white;
             z-index: 2;
-            /* Långsam glidning uppåt */
+          
             transition: transform 3s ease-in-out 0.8s, height 3s ease-in-out 0.8s;
             box-sizing: border-box;
             padding: 20px;
@@ -84,7 +84,7 @@
         .letter h1 { font-size: 22px; color: #ec407a; margin-top: 0; font-family: 'Georgia', serif; }
         .letter p { font-size: 14px; color: #555; margin: 8px 0; line-height: 1.4; }
 
-        /* Animation när det öppnas */
+   
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
@@ -98,7 +98,7 @@
             z-index: 5;
         }
 
-        /* Lösenordsrutan */
+  
         #password-container {
             background-color: #f8bbd0;
             padding: 25px;
@@ -115,7 +115,6 @@
             margin-bottom: 15px;
             text-align: center;
             outline: none;
-            /* FIX: Stoppar zoom på iPhone/Android */
             font-size: 16px; 
         }
 
@@ -141,7 +140,7 @@
                 <h1> Min Examen!! </h1>
                 <p> 3 år går snabbt och nu är det äntligen dags för min examen! Välkomna att fira min stora dag med mig! </p>
                 <p><strong>Datum:</strong> 6 Juni 2026</p>
-                <p><strong>Tid:</strong> Kl xxx </p>
+                <p><strong>Tid:</strong> Kl 16 </p>
                 <p><strong>Plats:</strong> Safirvägen 4 </p>
                 <p> Kram!! </p>
             </div>
@@ -165,7 +164,7 @@
                 document.getElementById("envelope").classList.add("open");
                 document.getElementById("password-container").style.display = "none";
             } else {
-                alert("Fel lösenord!");
+                alert("Fel lösenord! psst kanske något med 4?");
             }
         }
     </script>
